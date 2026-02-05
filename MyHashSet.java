@@ -1,22 +1,22 @@
+class MyHashSet {
 
-public class MyHashSet {
-	int primaryArraySize;
+    int primaryArraySize;
     int secondaryArraySize;
 
     boolean[][] customHashArray;
 
     public MyHashSet() {
-        this.primaryArraySize = 1001;
+        this.primaryArraySize = 1000;
         this.secondaryArraySize = 1000;
         this.customHashArray = new boolean[primaryArraySize][];
     }
     
     public int getPrimaryHashValue(int key) {
-        return key / primaryArraySize + 1;
+        return key % primaryArraySize;
     }
 
     public int getSecondaryHashValue(int key) {
-        return key % secondaryArraySize;
+        return key / secondaryArraySize;
     }
 
     public void add(int key) {
@@ -25,7 +25,11 @@ public class MyHashSet {
         int secondaryPos = getSecondaryHashValue(key);
 
         if(customHashArray[primaryPos] == null) {
-            customHashArray[primaryPos] = new boolean[secondaryArraySize];
+            if(primaryPos == 0 && secondaryPos == 1000) {
+                customHashArray[primaryPos] = new boolean[secondaryArraySize + 1];
+            } else {
+                customHashArray[primaryPos] = new boolean[secondaryArraySize];
+            }
         }
         customHashArray[primaryPos][secondaryPos] = true;
     }
